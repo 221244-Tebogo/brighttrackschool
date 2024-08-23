@@ -1,0 +1,187 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;500&display=swap");
+
+:root {
+  --bodybg: #ffffff;
+  --primary-color: #0F3F62;
+  --grey: #d6d6d6;
+  --placeholder: #969696;
+  --white: #fff;
+  --text: #333;
+  --slider-bg: #E4F4FF;
+  --login-cta-hover: #0F3F62;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bodybg);
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  display: flex;
+  max-width: 1200px;
+  background: var(--white);
+  margin: auto;
+  width: 100%;
+  min-width: 320px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.login-container .login-form {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-container .login-form h1 {
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.login-container .login-form span {
+  color: var(--text);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.login-container .login-form input,
+.login-container .login-form select {
+  background: var(--white);
+  border: 1px solid var(--grey);
+  padding: 12px 15px;
+  margin: 10px 0;
+  width: 100%;
+  color: var(--text);
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.login-container .login-form input::placeholder {
+  color: var(--placeholder);
+  font-weight: 300;
+}
+
+.login-container .login-form button {
+  border-radius: 50px;
+  border: 1px solid var(--primary-color);
+  background: var(--primary-color);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 45px;
+  margin-top: 20px;
+  text-transform: uppercase;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.login-container .login-form button:hover {
+  background: var(--login-cta-hover);
+}
+
+.login-container .login-form .link {
+  color: var(--primary-color);
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.login-container .login-form .link:hover {
+  text-decoration: underline;
+}
+
+.login-container .login-form .custom-check {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.login-container .login-form .custom-check input[type="checkbox"] {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.login-container .onboarding {
+  width: 50%;
+  background: #E4F4FF; 
+  color: #666666;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.login-container .onboarding .onboarding-logo {
+  max-width: 50%; 
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+@media screen and (min-width: 768px) {
+  .login-container .onboarding {
+    display: flex;
+  }
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 400px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
