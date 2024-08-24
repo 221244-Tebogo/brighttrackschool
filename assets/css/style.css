@@ -21,7 +21,7 @@ h1 {
 
 p {
   font-size: 14px;
-  font-weight: 100;
+  font-weight: 400; /* Updated font-weight to make text less thin */
   line-height: 20px;
   letter-spacing: .5px;
   margin: 20px 0 30px;
@@ -203,7 +203,11 @@ button.ghost {
   transform: translateY(0);
 }
 
-
 .container.right-panel-active .overlay-right {
   transform: translateY(20%);
+}
+
+.main-content {
+  margin-left: 260px;
+  padding: 20px;
 }

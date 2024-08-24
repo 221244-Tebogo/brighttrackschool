@@ -1,36 +1,47 @@
-<!-- WORKING REGISTRATION PAGE -->
 <?php
 include('../../config.php'); // Include your database connection
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get the posted data
-    $first_name = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
-    $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password
-    $user_type = $_POST['user_type'];
-    $gender = $_POST['gender'];
-    $dob = $_POST['dob'];
+    // Get the posted data and sanitize it
+    $first_name = $conn->real_escape_string($_POST['first_name']);
+    $last_name = $conn->real_escape_string($_POST['last_name']);
+    $email = $conn->real_escape_string($_POST['email']);
+    $password = password_hash($conn->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hash the password
+    $user_type = $conn->real_escape_string($_POST['user_type']);
+
+    // Initialize the SQL query
+    $sql = '';
 
     // Handle registration based on the selected user type
     if ($user_type == 'admin') {
         $sql = "INSERT INTO Admin (UserName, Email, Password) VALUES ('$first_name $last_name', '$email', '$password')";
     } elseif ($user_type == 'student') {
+        $gender = $conn->real_escape_string($_POST['gender']);
+        $dob = $conn->real_escape_string($_POST['dob']);
         $sql = "INSERT INTO Student (FirstName, LastName, Email, Gender, DOB) VALUES ('$first_name', '$last_name', '$email', '$gender', '$dob')";
     } elseif ($user_type == 'teacher') {
-        $sql = "INSERT INTO Teacher (FirstName, LastName, Email, Gender, Marks, Projects) VALUES ('$first_name', '$last_name', '$email', '$gender', 0, 0)";
+        $gender = $conn->real_escape_string($_POST['gender']);
+        $sql = "INSERT INTO Teacher (FirstName, LastName, Email, Gender) VALUES ('$first_name', '$last_name', '$email', '$gender')";
     }
 
-    // Execute the query
+    // Execute the query and insert into UserTypeMapping table
     if ($conn->query($sql) === TRUE) {
-        header("Location: login.php"); // Redirect to login page after successful registration
+        // Insert into UserTypeMapping table
+        $mapping_sql = "INSERT INTO UserTypeMapping (Email, UserType) VALUES ('$email', '$user_type')";
+        if ($conn->query($mapping_sql) === TRUE) {
+            header("Location: login.php"); // Redirect to login page after successful registration
+            exit(); // Ensure no further code is executed
+        } else {
+            echo "Error inserting into UserTypeMapping: " . $conn->error;
+        }
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
 
-    $conn->close();
+    $conn->close(); // Close the database connection
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

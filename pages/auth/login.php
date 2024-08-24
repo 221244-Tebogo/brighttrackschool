@@ -2,13 +2,11 @@
 session_start(); // Start the session
 include('../../config.php'); // Include your database connection
 
-$errorMessage = '';
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $conn->real_escape_string($_POST['email']);
     $password = $_POST['password'];
 
-    // Query to find the user in UserTypeMapping table
+    // Query to find the user in the UserTypeMapping table
     $userCheckSql = "SELECT UserType FROM UserTypeMapping WHERE Email = '$email'";
     $result = $conn->query($userCheckSql);
 
@@ -16,13 +14,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row = $result->fetch_assoc();
         $userType = $row['UserType'];
 
-        // Check the password against the correct table
+        // Now, check the password against the correct table
         if ($userType == 'admin') {
-            $sql = "SELECT Password, UserName FROM Admin WHERE Email = '$email'";
+            $sql = "SELECT Password FROM Admin WHERE Email = '$email'";
         } elseif ($userType == 'student') {
-            $sql = "SELECT Password, FirstName, LastName FROM Student WHERE Email = '$email'";
+            $sql = "SELECT Password FROM Student WHERE Email = '$email'";
         } elseif ($userType == 'teacher') {
-            $sql = "SELECT Password, FirstName, LastName FROM Teacher WHERE Email = '$email'";
+            $sql = "SELECT Password FROM Teacher WHERE Email = '$email'";
         }
 
         $passwordResult = $conn->query($sql);
@@ -30,13 +28,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($passwordResult->num_rows > 0) {
             $passwordRow = $passwordResult->fetch_assoc();
             $hashedPassword = $passwordRow['Password'];
-            $userName = $passwordRow['UserName'] ?? $passwordRow['FirstName'] . ' ' . $passwordRow['LastName'];
 
             // Verify password
             if (password_verify($password, $hashedPassword)) {
                 // Password is correct, set session variables and redirect
                 $_SESSION['email'] = $email;
-                $_SESSION['user_name'] = $userName;
                 $_SESSION['user_type'] = $userType;
 
                 // Redirect based on user type
@@ -49,13 +45,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 exit(); // Ensure no further code is executed
             } else {
-                $errorMessage = "Invalid password.";
+                echo "Invalid password.";
             }
         } else {
-            $errorMessage = "Error finding user in the database.";
+            echo "Error finding user in the database. (Password not found)";
         }
     } else {
-        $errorMessage = "No user found with that email.";
+        echo "No user found with the provided email in the UserTypeMapping table.";
     }
 
     $conn->close(); // Close the database connection

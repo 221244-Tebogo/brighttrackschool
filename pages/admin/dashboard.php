@@ -1,14 +1,17 @@
-<?php
-include('../../config.php'); // Include database configuration
-include('../../components/header.php'); // Include header
-include('../../components/sidebar.php'); // Include sidebar
-?>
-
-<div class="main-content">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+  <?php include('../../components/sidebar.php'); ?>
+  <div class="main-content" style="margin-left: 250px; padding: 20px;">
     <h1>Admin Dashboard</h1>
-    <!-- Content specific to the admin dashboard -->
-</div>
-
-<?php
-include('../../components/footer.php'); // Include footer
-?>
+    <p>Welcome to the Admin Dashboard. Manage users, classes, and all backend processes here.</p>
+  </div>
+  <?php include('../../components/footer.php'); ?>
+</body>
+</html>
