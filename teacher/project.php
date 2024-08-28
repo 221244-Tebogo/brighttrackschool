@@ -1,7 +1,7 @@
 <?php
-include('../../config.php');
-include('../../components/header.php');
-include('../../components/sidebar.php');
+include('../config.php');
+include('../components/header.php');
+include('../components/sidebar.php');
 ?>
 
 <div class="main-content">
@@ -10,5 +10,5 @@ include('../../components/sidebar.php');
 </div>
 
 <?php
-include('../../components/footer.php');
+include('../components/footer.php');
 ?>

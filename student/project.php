@@ -11,5 +11,5 @@ include('../../components/sidebar.php');
 </div>
 
 <?php
-include('../../components/footer.php');
+include('../components/footer.php');
 ?>

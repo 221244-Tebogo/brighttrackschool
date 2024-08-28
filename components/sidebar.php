@@ -5,7 +5,7 @@
             <button type="button" class="sidebar-burger">
                 <span class="material-symbols-outlined">menu</span>
             </button>
-            <img src="../../assets/images/Logo.svg" class="sidebar-logo" alt="Logo">
+            <img src="../assets/images/Logo.svg" class="sidebar-logo" alt="Logo">
         </header>
         <nav class="sidebar-menu">
             <?php
@@ -33,14 +33,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../assets/css/sidebar.css"> <!-- Link to sidebar CSS -->
+    <link rel="stylesheet" href="../assets/css/sidebar.css"> <!-- Link to sidebar CSS -->
 </head>
 <body>
     <aside id="sidebar" class="sidebar">
         <div class="handle" onmousedown="initResize(event)"></div>
         <div class="sidebar-inner">
             <header class="sidebar-header">
-                <img src="../../assets/images/Logo.svg" class="sidebar-logo" alt="Logo">
+                <img src="../assets/images/Logo.svg" class="sidebar-logo" alt="Logo">
             </header>
             <nav class="sidebar-menu">
                 <?php
