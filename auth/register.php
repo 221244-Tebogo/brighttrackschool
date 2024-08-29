@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 include('../config.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -10,14 +13,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $gender = ($user_type == 'student') ? $conn->real_escape_string($_POST['gender']) : 'Other';
     $dob = ($user_type == 'student' && isset($_POST['dob'])) ? $conn->real_escape_string($_POST['dob']) : '2000-01-01'; // Default DOB if not set
 
-    // SQL statement updates
     $sql = '';
     if ($user_type == 'admin') {
+        $user_name = $first_name . ' ' . $last_name;
         $sql = "INSERT INTO Admin (UserName, Email, Password) VALUES (?, ?, ?)";
     } elseif ($user_type == 'student') {
-        $sql = "INSERT INTO Student (FirstName, LastName, Email, Gender, DOB) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO Student (FirstName, LastName, Email, Gender, DOB, Password) VALUES (?, ?, ?, ?, ?, ?)";
     } elseif ($user_type == 'teacher') {
-        $sql = "INSERT INTO Teacher (FirstName, LastName, Email, Gender) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO Teacher (FirstName, LastName, Email, Gender, Password) VALUES (?, ?, ?, ?, ?)";
     }
 
     $stmt = $conn->prepare($sql);
@@ -26,12 +29,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    // Bind parameters based on user type
     if ($user_type == 'admin') {
-        $stmt->bind_param("sss", $first_name . ' ' . $last_name, $email, $password);
+        $stmt->bind_param("sss", $user_name, $email, $password);
     } elseif ($user_type == 'student') {
-        $stmt->bind_param("sssss", $first_name, $last_name, $email, $gender, $dob);
+        $stmt->bind_param("ssssss", $first_name, $last_name, $email, $gender, $dob, $password);
     } elseif ($user_type == 'teacher') {
-        $stmt->bind_param("ssss", $first_name, $last_name, $email, $gender);
+        $stmt->bind_param("sssss", $first_name, $last_name, $email, $gender, $password);
     }
 
     if (!$stmt->execute()) {
@@ -56,7 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->close();
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -117,4 +120,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </script>
 </body>
 </html>
-

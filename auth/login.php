@@ -1,6 +1,11 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
-require_once('../config.php'); // Ensure this path is correct relative to the file
+require_once('../config.php');
 
 $errorMessage = '';
 
@@ -8,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $conn->real_escape_string($_POST['email']);
     $password = $_POST['password'];
 
+    // Step 1: Get the user type from UserTypeMapping
     $stmt = $conn->prepare("SELECT UserType FROM UserTypeMapping WHERE Email = ?");
     if (!$stmt) {
         $errorMessage = "Error preparing UserTypeMapping query: " . $conn->error;
@@ -18,49 +24,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result->num_rows === 1) {
             $userType = $result->fetch_assoc()['UserType'];
-            $userQuery = "SELECT Password, " . ($userType === 'admin' ? "UserName" : "FirstName, LastName") . " FROM " .
-                         ($userType === 'admin' ? "Admin" : ($userType === 'student' ? "Student" : "Teacher")) .
-                         " WHERE Email = ?";
 
-            $stmt = $conn->prepare($userQuery);
-            if (!$stmt) {
-                $errorMessage = "Error preparing user query: " . $conn->error;
+            // Step 2: Prepare the query based on the user type
+            $userQuery = "";
+            if ($userType === 'admin') {
+                $userQuery = "SELECT Password, UserName FROM Admin WHERE Email = ?";
+            } elseif ($userType === 'student') {
+                $userQuery = "SELECT Password, FirstName, LastName FROM Student WHERE Email = ?";
+            } elseif ($userType === 'teacher') {
+                $userQuery = "SELECT Password, FirstName, LastName FROM Teacher WHERE Email = ?";
             } else {
-                $stmt->bind_param("s", $email);
-                $stmt->execute();
-                $passwordResult = $stmt->get_result();
+                $errorMessage = "Invalid user type.";
+            }
 
-                if ($passwordResult->num_rows === 1) {
-                    $userData = $passwordResult->fetch_assoc();
-                    if (password_verify($password, $userData['Password'])) {
-                        $_SESSION['email'] = $email;
-                        $_SESSION['user_name'] = isset($userData['UserName']) ? $userData['UserName'] : $userData['FirstName'] . ' ' . $userData['LastName'];
-                        $_SESSION['user_type'] = $userType;
-
-                        switch ($userType) {
-                            case 'admin':
-                                header("Location: /admin/admin_dashboard.php");
-                                break;
-                            case 'student':
-                                header("Location: /student/index.php");
-                                break;
-                            case 'teacher':
-                                header("Location: /teacher/dashboard.php");
-                                break;
-                        }
-                        exit;
-                    } else {
-                        $errorMessage = "Invalid password.";
-                    }
+            // Step 3: Execute the query if it's valid
+            if (!empty($userQuery)) {
+                $stmt = $conn->prepare($userQuery);
+                if (!$stmt) {
+                    $errorMessage = "Error preparing user query: " . $conn->error;
                 } else {
-                    $errorMessage = "No such user found.";
+                    $stmt->bind_param("s", $email);
+                    $stmt->execute();
+                    $passwordResult = $stmt->get_result();
+
+                    if ($passwordResult->num_rows === 1) {
+                        $userData = $passwordResult->fetch_assoc();
+                        if (password_verify($password, $userData['Password'])) {
+                            $_SESSION['email'] = $email;
+                            $_SESSION['user_name'] = isset($userData['UserName']) ? $userData['UserName'] : $userData['FirstName'] . ' ' . $userData['LastName'];
+                            $_SESSION['user_type'] = $userType;
+
+                            // Step 4: Redirect based on user type
+                            switch ($userType) {
+                                case 'admin':
+                                    header("Location: ../admin/admin_dashboard.php");
+                                    break;
+                                case 'student':
+                                    header("Location: ../student/index.php");
+                                    break;
+                                case 'teacher':
+                                    header("Location: ../teacher/dashboard.php");
+                                    break;
+                            }
+                            exit;
+                        } else {
+                            $errorMessage = "Invalid password.";
+                        }
+                    } else {
+                        $errorMessage = "No such user found.";
+                    }
+                    $stmt->close();
                 }
-                $stmt->close();
             }
         } else {
             $errorMessage = "No user found with that email.";
         }
-        $stmt->close();
+        if ($stmt) $stmt->close();
     }
     $conn->close();
 }

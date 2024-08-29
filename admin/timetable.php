@@ -1,7 +1,7 @@
 <?php
 require_once '../config.php';
 
-// Fetch classes for dropdown
+// Fetch classes and subjects for dropdowns
 $classOptions = '';
 $classQuery = "SELECT ClassID, ClassName FROM Class ORDER BY ClassName";
 $classResult = $conn->query($classQuery);
@@ -13,7 +13,6 @@ if ($classResult) {
     echo "Error fetching classes: " . $conn->error;
 }
 
-// Fetch subjects for dropdown
 $subjectOptions = '';
 $subjectQuery = "SELECT SubjectID, Name FROM Subject ORDER BY Name";
 $subjectResult = $conn->query($subjectQuery);
@@ -30,8 +29,8 @@ if ($subjectResult) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Class Timetable Management</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <title>Timetable Management</title>
+    <link rel="stylesheet" href="../assets/css/calendar.css">
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' rel='stylesheet' />
     <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
@@ -64,7 +63,6 @@ if ($subjectResult) {
                         classID: classID,
                         subjectID: subjectID
                     };
-                    // POST to server
                     $.post('add_event.php', eventData, function(response) {
                         if (response.status === 'success') {
                             calendar.fullCalendar('renderEvent', eventData, true); // stick? = true
