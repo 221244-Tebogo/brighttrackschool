@@ -1,20 +1,38 @@
 <?php
+session_start();
 require_once '../config.php';
 
-$assignmentID = $_POST['assignmentID'];
-$studentID = $_POST['studentID'];
-$file = $_FILES['fileUpload'];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['fileUpload'])) {
+    $assignmentID = $_POST['assignmentID'];
+    $studentID = $_POST['studentID'];
+    $filePath = "uploads/" . basename($_FILES['fileUpload']['name']);
 
-$filePath = 'uploads/' . $file['name'];
-move_uploaded_file($file['tmp_name'], $filePath);
+    // Attempt to upload file
+    if (move_uploaded_file($_FILES['fileUpload']['tmp_name'], $filePath)) {
+        $submittedDate = date("Y-m-d H:i:s"); // Current date and time
+        $query = "INSERT INTO Submission (AssignmentID, StudentID, SubmittedDate, FilePath) VALUES (?, ?, ?, ?)";
+        $stmt = $conn->prepare($query);
+        
+        if ($stmt === false) {
+            echo "Error preparing statement: " . $conn->error;
+            exit;
+        }
 
-$sql = "INSERT INTO Submission (AssignmentID, StudentID, SubmittedDate, FilePath) VALUES (?, ?, NOW(), ?)";
-$stmt = $conn->prepare($sql);
-$stmt->execute([$assignmentID, $studentID, $filePath]);
+        $stmt->bind_param("iiss", $assignmentID, $studentID, $submittedDate, $filePath);
+        
+        if ($stmt->execute()) {
+            echo "Assignment submitted successfully.";
+        } else {
+            echo "Error submitting assignment: " . $stmt->error;
+        }
+        
+        $stmt->close();
+    } else {
+        echo "Error uploading file.";
+    }
 
-if ($stmt->rowCount()) {
-    echo "Submission successful!";
+    $conn->close();
 } else {
-    echo "Failed to submit.";
+    echo "Invalid request.";
 }
 ?>
