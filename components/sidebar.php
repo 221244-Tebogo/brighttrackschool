@@ -6,6 +6,10 @@
                 <span class="material-symbols-outlined">menu</span>
             </button>
             <img src="../assets/images/Logo.svg" class="sidebar-logo" alt="Logo">
+            <div class="user-profile">
+                <img src="../assets/images/user_placeholder.png" class="user-icon" alt="User Icon">
+                <p class="user-name">Welcome, <?php echo $username; ?></p>
+            </div>
         </header>
         <nav class="sidebar-menu">
             <?php
@@ -13,6 +17,7 @@
                 "school" => "Classes",
                 "schedule" => "Timetable",
                 "assessment" => "Reports",
+                "profile" => "Profile",
                 "logout" => "Logout"
             ];
             
@@ -27,6 +32,7 @@
         </nav>
     </div>
 </aside>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,6 +54,7 @@
                     "school" => "Classes",
                     "schedule" => "Timetable",
                     "assessment" => "Reports",
+                    "profile" => "Profile",
                     "logout" => "Logout"
                 ];
                 

@@ -32,7 +32,11 @@
                 </button>
                 <button type="button" class="sidebar-button" onclick="window.location.href='class_list.php'">
                     <span class="material-symbols-outlined">class</span>
-                    <p the "material-symbols-outlined">Classes</p>
+                    <p class="sidebar-text">Classes</p>
+                </button>
+                <button type="button" class="sidebar-button" onclick="window.location.href='assign_timetable.php'">
+                    <span class="material-symbols-outlined">schedule</span>
+                    <p class="sidebar-text">Timetable</p>
                 </button>
                 <button type="button" class="sidebar-button" onclick="window.location.href='add_subject.php'">
                     <span class="material-symbols-outlined">book</span>

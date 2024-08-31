@@ -8,7 +8,7 @@
 </head>
 <body>
     <?php
-    require_once '../config.php';  // Ensure this path is correct
+    require_once '../config.php'; 
     ?>
 
     <h1>Create Assignment</h1>

@@ -3,12 +3,14 @@ include('../config.php');
 include('../components/header.php');
 include('../components/sidebar.php');
 
-// Fetch all assignments for demonstration purposes
-// Corrected query: assuming there is an Enrollment table with ClassID and AssignmentID in Assignment table
-$query = "SELECT a.AssignmentID, a.Description, a.DueDate 
-          FROM Assignment a 
-          JOIN Class c ON a.ClassID = c.ClassID 
-          JOIN Enrollment e ON c.ClassID = e.ClassID 
+// Assuming StudentID is stored in session after login
+$studentID = $_SESSION['student_id']; 
+
+// Updated query: Fetch assignments for the student's enrolled classes
+$query = "SELECT a.AssignmentID, a.Name, a.DueDate, a.Description
+          FROM Assignment a
+          JOIN Class c ON a.SubjectID = c.SubjectID
+          JOIN Enrollment e ON c.ClassID = e.ClassID
           WHERE e.StudentID = ?";
 
 $stmt = $conn->prepare($query);
@@ -18,7 +20,7 @@ if ($stmt === false) {
     exit;
 }
 
-// Execute without specific student ID
+$stmt->bind_param("i", $studentID);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
@@ -42,8 +44,9 @@ $result = $stmt->get_result();
             <?php
             if ($result->num_rows > 0) {
                 while ($assignment = $result->fetch_assoc()) {
-                    echo "<div><h3>" . htmlspecialchars($assignment['Description']) . "</h3>";
+                    echo "<div><h3>" . htmlspecialchars($assignment['Name']) . "</h3>";
                     echo "<p>Due date: " . htmlspecialchars($assignment['DueDate']) . "</p>";
+                    echo "<p>Description: " . htmlspecialchars($assignment['Description']) . "</p>";
                     echo "<a href='submit_assignment.php?assignmentID=" . htmlspecialchars($assignment['AssignmentID']) . "'>Submit Assignment</a></div>";
                 }
             } else {
