@@ -50,7 +50,7 @@ The Bright Track School App is an educational platform designed to streamline th
 - **Performance Tracking**: Monitor personal academic performance and receive feedback from teachers.
 
 ## Demonstration Video
-https://drive.google.com/file/d/1qze3RlPCYia5Pc5dv6nPPAkT4bKSWPZa/view?usp=drive_link
+[https://drive.google.com/file/d/1qze3RlPCYia5Pc5dv6nPPAkT4bKSWPZa/view?usp=drive_link](https://drive.google.com/file/d/1qze3RlPCYia5Pc5dv6nPPAkT4bKSWPZa/view?usp=sharing)
 
 ## Tech stack
 - **Frontend:** HTML, CSS, JavaScript
