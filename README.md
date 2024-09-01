@@ -2,45 +2,50 @@
 
 ## Overview
 
-Welcome to the Bright Track School App repository! This web application is designed to facilitate the management of student records, class schedules, and teacher assignments. The platform ensures a seamless interface for both administrators and students to interact with school resources efficiently.
+The Bright Track School App is an educational platform designed to streamline the interaction between students, teachers, and administrative staff. It facilitates the management of student records, class schedules, teacher assignments, and more, ensuring an effective and organized educational environment.
 
-### Table of Contents
-
-- [About the Project](#about-the-project)
-  - [Built With](#built-with)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
+## Table of Contents
+- [Mockups](#mockups)
 - [Features](#features)
+- [Tech stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Endpoints](#api-endpoints)
+- [Contributors](#contributors)
 - [Contributing](#contributing)
-- [Versioning](#versioning)
-- [Authors](#authors)
 - [License](#license)
-- [Acknowledgements](#acknowledgements)
 
-## About the Project
+## Mockups
 
-The Student App is an all-in-one educational tool aimed at improving the academic and administrative processes of schools. It connects students, teachers, and administrative staff through an intuitive web interface.
+### Authentication and Registration
+![Authentication and Registration](mockups/auth-register.jpg)
 
-### Built With
+### Manage Teachers
+![Manage Teachers](mockups/manange_teachers.jpg)
 
-- **Frontend:** HTML5, CSS3, JavaScript
+### Teacher's Dashboard
+![Teacher's Dashboard](mockups/teachers_dashboard.jpg)
+
+### Assign Timetable
+![Assign Timetable](mockups/assign_timetable.jpg)
+
+## Features
+
+- User registration and authentication system.
+- Management panels for students, teachers, and classes.
+- Dynamic timetable scheduling and adjustments.
+- Real-time updates on class assignments and schedules.
+- Administrative tools for user and system settings management.
+
+## Tech stack
+- **Frontend:** HTML, CSS, JavaScript
 - **Backend:** PHP, MySQL
-- **Frameworks/Libraries:** Bootstrap, jQuery
+- **Framework:** Bootstrap for responsive design
+- **Server:** Apache
 
-## Getting Started
+## Installation
 
-### Prerequisites
-
-Ensure you have the following installed on your local machine:
-
-- PHP 7.4 or higher
-- MySQL 5.7 or higher
-- Apache or Nginx as a web server
-
-### Installation
-
-1. Clone the repository:
+1. **Clone the repository**
    ```bash
    git clone https://github.com/221244-Tebogo/brighttrackschool.git
+   cd brighttrackschool
