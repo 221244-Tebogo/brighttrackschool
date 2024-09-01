@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 include('../config.php'); 
 
 try {
-    // Fetch Assignments
+    
     $stmtAssignments = $conn->prepare("SELECT Name, DueDate, Description FROM Assignment ORDER BY DueDate DESC");
     if (!$stmtAssignments) {
         throw new Exception("Error preparing statement for assignments: " . $conn->error);
@@ -17,8 +17,9 @@ try {
     while ($row = $resultAssignments->fetch_assoc()) {
         $assignments[] = $row;
     }
+    $stmtAssignments->close();
 
-    // Fetch Timetable
+
     $stmtTimetable = $conn->prepare("
         SELECT Day, StartTime, EndTime, SubjectID 
         FROM Timetable 
@@ -33,9 +34,10 @@ try {
     while ($row = $resultTimetable->fetch_assoc()) {
         $timetable[] = $row;
     }
+    $stmtTimetable->close();
 
 } catch (Exception $e) {
-    echo "Error: " . $e->getMessage();
+    echo "<div class='alert alert-danger'>Error: " . htmlspecialchars($e->getMessage()) . "</div>";
     exit;
 }
 ?>
@@ -46,17 +48,19 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../assets/css/style.css">
-</head>
+    <link rel="stylesheet" href="../assets/css/sidebar.css"></head>
 <body>
     <div class="sidebar">
         <?php include '../components/admin_sidebar.php'; ?>
     </div>
-    <div class="main-container">
-        <h1>Dashboard</h1>
+    <div class="container mt-4">
+        <h1 class="mb-4">Dashboard</h1>
         
         <h2>Upcoming Assignments</h2>
-        <table class="table">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Due Date</th>
@@ -80,7 +84,7 @@ try {
         </table>
 
         <h2>Timetable</h2>
-        <table class="table">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Day</th>
@@ -105,5 +109,8 @@ try {
             </tbody>
         </table>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

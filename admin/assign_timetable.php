@@ -2,7 +2,7 @@
 require_once '../config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Collect POST data
+    
     $classID = $_POST['classID'];
     $teacherID = $_POST['teacherID'];
     $day = $_POST['day'];
@@ -10,20 +10,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $endTime = $_POST['endTime'];
     $subjectID = $_POST['subjectID'];
 
-    // Prepare SQL Statement
+   
     $sql = "INSERT INTO Timetable (ClassID, Day, StartTime, EndTime, SubjectID, TeacherID) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     if ($stmt) {
-        // Bind parameters and execute statement
         $stmt->bind_param("isssii", $classID, $day, $startTime, $endTime, $subjectID, $teacherID);
         if ($stmt->execute()) {
-            echo "<p>Timetable assigned successfully!</p>";
+            $message = "<div class='alert alert-success'>Timetable assigned successfully!</div>";
         } else {
-            echo "<p>Error assigning timetable: " . $stmt->error . "</p>";
+            $message = "<div class='alert alert-danger'>Error assigning timetable: " . $stmt->error . "</div>";
         }
         $stmt->close();
     } else {
-        echo "<p>Error preparing statement: " . $conn->error . "</p>";
+        $message = "<div class='alert alert-danger'>Error preparing statement: " . $conn->error . "</div>";
     }
     $conn->close();
 }
@@ -32,19 +31,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Timetable Assignments</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/sidebar.css">
 </head>
 <body>
 <div class="sidebar">
     <?php include '../components/admin_sidebar.php'; ?>
 </div>
-<div class="content">
+<div class="container mt-4">
     <h1>Assign Timetables</h1>
-    <form action="assign_timetable.php" method="post">
-        <div>
+
+    <?php if (isset($message)) echo $message; ?>
+
+    <form action="assign_timetable.php" method="post" class="mb-4">
+        <div class="form-group">
             <label for="classSelect">Select Class:</label>
-            <select id="classSelect" name="classID">
+            <select id="classSelect" name="classID" class="form-control" required>
                 <option value="">Select a Class</option>
                 <?php
                 $classes = $conn->query("SELECT ClassID, ClassName FROM Class ORDER BY ClassName");
@@ -54,9 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ?>
             </select>
         </div>
-        <div>
+        <div class="form-group">
             <label for="teacherSelect">Select Teacher:</label>
-            <select id="teacherSelect" name="teacherID">
+            <select id="teacherSelect" name="teacherID" class="form-control" required>
                 <option value="">Select a Teacher</option>
                 <?php
                 $teachers = $conn->query("SELECT TeacherID, FirstName, LastName FROM Teacher ORDER BY FirstName");
@@ -66,9 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ?>
             </select>
         </div>
-        <div>
+        <div class="form-group">
             <label for="day">Day:</label>
-            <select id="day" name="day" required>
+            <select id="day" name="day" class="form-control" required>
                 <option value="">Select a Day</option>
                 <option value="Monday">Monday</option>
                 <option value="Tuesday">Tuesday</option>
@@ -77,17 +82,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="Friday">Friday</option>
             </select>
         </div>
-        <div>
+        <div class="form-group">
             <label for="startTime">Start Time:</label>
-            <input type="time" id="startTime" name="startTime" required>
+            <input type="time" id="startTime" name="startTime" class="form-control" required>
         </div>
-        <div>
+        <div class="form-group">
             <label for="endTime">End Time:</label>
-            <input type="time" id="endTime" name="endTime" required>
+            <input type="time" id="endTime" name="endTime" class="form-control" required>
         </div>
-        <div>
+        <div class="form-group">
             <label for="subjectSelect">Select Subject:</label>
-            <select id="subjectSelect" name="subjectID">
+            <select id="subjectSelect" name="subjectID" class="form-control" required>
                 <option value="">Select a Subject</option>
                 <?php
                 $subjects = $conn->query("SELECT SubjectID, Name FROM Subject ORDER BY Name");
@@ -97,10 +102,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ?>
             </select>
         </div>
-        <button type="submit">Assign Timetable</button>
+        <button type="submit" class="btn btn-primary">Assign Timetable</button>
     </form>
+
     <h2>Current Timetable Assignments</h2>
-    <table>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Class</th>
@@ -113,7 +119,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </thead>
         <tbody>
             <?php
-            $query = "SELECT t.Day, t.StartTime, t.EndTime, c.ClassName, s.Name AS SubjectName, CONCAT(te.FirstName, ' ', te.LastName) AS TeacherName FROM Timetable t JOIN Class c ON t.ClassID = c.ClassID JOIN Subject s ON t.SubjectID = s.SubjectID JOIN Teacher te ON t.TeacherID = te.TeacherID ORDER BY t.Day, t.StartTime";
+            $query = "SELECT t.Day, t.StartTime, t.EndTime, c.ClassName, s.Name AS SubjectName, CONCAT(te.FirstName, ' ', te.LastName) AS TeacherName 
+                      FROM Timetable t 
+                      JOIN Class c ON t.ClassID = c.ClassID 
+                      JOIN Subject s ON t.SubjectID = s.SubjectID 
+                      JOIN Teacher te ON t.TeacherID = te.TeacherID 
+                      ORDER BY t.Day, t.StartTime";
             $result = $conn->query($query);
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -133,6 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </tbody>
     </table>
 </div>
-<script src="../assets/js/admin.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -66,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Fetch all students for display
 $sql = "SELECT StudentID, FirstName, LastName, Email, Gender, DOB FROM Student";
 $result = $conn->query($sql);
 $students = [];
@@ -82,6 +81,7 @@ if ($result->num_rows > 0) {
 <head>
     <meta charset="UTF-8">
     <title>Manage Students</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
@@ -89,24 +89,26 @@ if ($result->num_rows > 0) {
 <div class="sidebar">
     <?php include '../components/admin_sidebar.php'; ?>
 </div>
+<div class="container mt-4">
+
 <div class="content">
     <h1>Manage Students</h1>
-    <button onclick="showAddForm()">Add New Student</button>
-    <div id="addEditForm" style="display:none;">
+    <button class="btn btn-primary" onclick="showAddForm()">Add New Student</button>
+    <div id="addEditForm" style="display:none;" class="mt-3">
         <input type="hidden" id="studentId">
-        <input type="text" id="firstName" placeholder="First Name">
-        <input type="text" id="lastName" placeholder="Last Name">
-        <input type="email" id="email" placeholder="Email">
-        <select id="gender">
+        <input type="text" id="firstName" class="form-control mb-2" placeholder="First Name">
+        <input type="text" id="lastName" class="form-control mb-2" placeholder="Last Name">
+        <input type="email" id="email" class="form-control mb-2" placeholder="Email">
+        <select id="gender" class="form-control mb-2">
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
         </select>
-        <input type="date" id="dob" placeholder="Date of Birth">
-        <button onclick="saveStudent()">Save</button>
-        <button onclick="hideForm()">Cancel</button>
+        <input type="date" id="dob" class="form-control mb-2" placeholder="Date of Birth">
+        <button class="btn btn-success" onclick="saveStudent()">Save</button>
+        <button class="btn btn-secondary" onclick="hideForm()">Cancel</button>
     </div>
-    <table>
+    <table class="table table-striped mt-3">
         <thead>
             <tr>
                 <th>First Name</th>
@@ -126,8 +128,8 @@ if ($result->num_rows > 0) {
                 <td><?= htmlspecialchars($student['Gender']) ?></td>
                 <td><?= htmlspecialchars($student['DOB']) ?></td>
                 <td>
-                    <button onclick="editStudent(<?= $student['StudentID'] ?>)">Edit</button>
-                    <button onclick="deleteStudent(<?= $student['StudentID'] ?>)">Delete</button>
+                    <button class="btn btn-success btn-sm" onclick="editStudent(<?= $student['StudentID'] ?>)">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteStudent(<?= $student['StudentID'] ?>)">Delete</button>
                 </td>
             </tr>
             <?php endforeach; ?>

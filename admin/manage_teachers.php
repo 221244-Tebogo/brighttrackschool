@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Fetch all teachers for display
+
 $sql = "SELECT TeacherID, FirstName, LastName, Email, Gender FROM Teacher";
 $result = $conn->query($sql);
 $teachers = [];
@@ -81,30 +81,34 @@ if ($result->num_rows > 0) {
 <head>
     <meta charset="UTF-8">
     <title>Manage Teachers</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/sidebar.css"></head>
+    <link rel="stylesheet" href="../assets/css/sidebar.css">
+</head>
 <body>
-<div class="sidebar">
+<div class="navbar">
     <?php include '../components/admin_sidebar.php'; ?>
 </div>
-    <div class="content">
+<div class="container mt-4">
+
+<div class="content">
     <h1>Manage Teachers</h1>
-    <button onclick="showAddForm()">Add New Teacher</button>
-    <div id="addEditForm" style="display:none;">
+    <button class="btn btn-primary mb-3" onclick="showAddForm()">Add New Teacher</button>
+    <div id="addEditForm" style="display:none;" class="mb-4">
         <input type="hidden" id="teacherId">
-        <input type="text" id="firstName" placeholder="First Name">
-        <input type="text" id="lastName" placeholder="Last Name">
-        <input type="email" id="email" placeholder="Email">
-        <select id="gender">
+        <input type="text" id="firstName" class="form-control mb-2" placeholder="First Name">
+        <input type="text" id="lastName" class="form-control mb-2" placeholder="Last Name">
+        <input type="email" id="email" class="form-control mb-2" placeholder="Email">
+        <select id="gender" class="form-control mb-2">
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
         </select>
-        <button onclick="saveTeacher()">Save</button>
-        <button onclick="hideForm()">Cancel</button>
+        <button class="btn btn-success" onclick="saveTeacher()">Save</button>
+        <button class="btn btn-secondary" onclick="hideForm()">Cancel</button>
     </div>
-    <table>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>First Name</th>
@@ -122,14 +126,14 @@ if ($result->num_rows > 0) {
                 <td><?= htmlspecialchars($teacher['Email']) ?></td>
                 <td><?= htmlspecialchars($teacher['Gender']) ?></td>
                 <td>
-                    <button onclick="editTeacher(<?= $teacher['TeacherID'] ?>)">Edit</button>
-                    <button onclick="deleteTeacher(<?= $teacher['TeacherID'] ?>)">Delete</button>
+                    <button class="btn btn-success btn-sm" onclick="editTeacher(<?= $teacher['TeacherID'] ?>)">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteTeacher(<?= $teacher['TeacherID'] ?>)">Delete</button>
                 </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-</body>
+</div>
 <script>
 function showAddForm() {
     $('#teacherId').val('');
@@ -183,4 +187,5 @@ function deleteTeacher(id) {
     }
 }
 </script>
+</body>
 </html>
