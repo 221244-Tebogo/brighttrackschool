@@ -123,3 +123,20 @@ button {
   }
 }
 
+.sidebar {
+  width: 250px; /* Default width */
+  transition: width 0.3s ease;
+}
+
+.sidebar .sidebar-logo {
+  width: 120px; /* Default logo width */
+  transition: all 0.3s ease;
+}
+
+
+@media (max-width: 100px) {
+  .sidebar .sidebar-logo {
+      content: url('../assets/images/Logo-smaller.svg'); 
+      width: 60px; /* Adjust size as necessary */
+  }
+}
