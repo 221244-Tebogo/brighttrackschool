@@ -7,16 +7,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO Subject (Name) VALUES (?)";
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
-        die("Prepare failed: " . $conn->error);
-    }
-
-    $stmt->bind_param("s", $name);
-    if ($stmt->execute()) {
-        echo "<p>Subject added successfully.</p>";
+        $message = "<div class='alert alert-danger'>Prepare failed: " . $conn->error . "</div>";
     } else {
-        echo "<p>Error adding subject: " . $stmt->error . "</p>";
+        $stmt->bind_param("s", $name);
+        if ($stmt->execute()) {
+            $message = "<div class='alert alert-success'>Subject added successfully.</div>";
+        } else {
+            $message = "<div class='alert alert-danger'>Error adding subject: " . $stmt->error . "</div>";
+        }
+        $stmt->close();
     }
-    $stmt->close();
     $conn->close();
 }
 ?>
@@ -27,17 +27,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Subject</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/sidebar.css">
 </head>
 <body>
 <div class="sidebar">
     <?php include '../components/admin_sidebar.php'; ?>
 </div>
+<div class="container mt-4">
+
 <div class="content">
     <h1>Add a New Subject</h1>
-    <form method="post" action="add_subject.php">
-        <input type="text" name="Name" placeholder="Enter subject name" required>
-        <button type="submit">Add Subject</button>
+    
+    <?php if (isset($message)) echo $message; ?>
+
+    <form method="post" action="add_subject.php" class="mb-4">
+        <div class="form-group">
+            <label for="subjectName">Subject Name:</label>
+            <input type="text" name="Name" id="subjectName" class="form-control" placeholder="Enter subject name" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Subject</button>
     </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

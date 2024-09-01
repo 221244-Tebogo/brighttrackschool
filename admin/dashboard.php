@@ -4,19 +4,41 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include('../config.php'); 
+
 try {
-    // Fetch Assignments
-    $stmtAssignments = $conn->prepare("SELECT * FROM Assignment ORDER BY Date DESC");
+    
+    $stmtAssignments = $conn->prepare("SELECT Name, DueDate, Description FROM Assignment ORDER BY DueDate DESC");
+    if (!$stmtAssignments) {
+        throw new Exception("Error preparing statement for assignments: " . $conn->error);
+    }
     $stmtAssignments->execute();
-    $assignments = $stmtAssignments->fetchAll();
+    $resultAssignments = $stmtAssignments->get_result();
+    $assignments = [];
+    while ($row = $resultAssignments->fetch_assoc()) {
+        $assignments[] = $row;
+    }
+    $stmtAssignments->close();
 
-    // Fetch Timetable (example for a specific class, you might need to adjust for student-specific)
-    $stmtTimetable = $conn->prepare("SELECT * FROM Timetable ORDER BY Day, StartTime");
+
+    $stmtTimetable = $conn->prepare("
+        SELECT Day, StartTime, EndTime, SubjectID 
+        FROM Timetable 
+        ORDER BY Day, StartTime
+    ");
+    if (!$stmtTimetable) {
+        throw new Exception("Error preparing statement for timetable: " . $conn->error);
+    }
     $stmtTimetable->execute();
-    $timetable = $stmtTimetable->fetchAll();
+    $resultTimetable = $stmtTimetable->get_result();
+    $timetable = [];
+    while ($row = $resultTimetable->fetch_assoc()) {
+        $timetable[] = $row;
+    }
+    $stmtTimetable->close();
 
-} catch(PDOException $e) {
-    echo "Error: " . $e->getMessage();
+} catch (Exception $e) {
+    echo "<div class='alert alert-danger'>Error: " . htmlspecialchars($e->getMessage()) . "</div>";
+    exit;
 }
 ?>
 
@@ -26,28 +48,33 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../assets/css/style.css">
-</head>
+    <link rel="stylesheet" href="../assets/css/sidebar.css"></head>
 <body>
-    <div class="main-content">
-        <h1>Student Dashboard</h1>
+    <div class="sidebar">
+        <?php include '../components/admin_sidebar.php'; ?>
+    </div>
+    <div class="container mt-4">
+        <h1 class="mb-4">Dashboard</h1>
         
         <h2>Upcoming Assignments</h2>
-        <table>
+        <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Date</th>
+                    <th>Due Date</th>
                     <th>Name</th>
-                    <th>Type</th>
+                    <th>Description</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (!empty($assignments)) { ?>
                     <?php foreach ($assignments as $assignment): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($assignment['Date']); ?></td>
+                            <td><?php echo htmlspecialchars($assignment['DueDate']); ?></td>
                             <td><?php echo htmlspecialchars($assignment['Name']); ?></td>
-                            <td><?php echo htmlspecialchars($assignment['Type']); ?></td>
+                            <td><?php echo htmlspecialchars($assignment['Description']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php } else { ?>
@@ -57,13 +84,13 @@ try {
         </table>
 
         <h2>Timetable</h2>
-        <table>
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Day</th>
                     <th>Start Time</th>
                     <th>End Time</th>
-                    <th>Subject</th>
+                    <th>Subject ID</th>
                 </tr>
             </thead>
             <tbody>
@@ -73,7 +100,7 @@ try {
                             <td><?php echo htmlspecialchars($time['Day']); ?></td>
                             <td><?php echo htmlspecialchars($time['StartTime']); ?></td>
                             <td><?php echo htmlspecialchars($time['EndTime']); ?></td>
-                            <td><?php echo htmlspecialchars($time['Subject']); ?></td>
+                            <td><?php echo htmlspecialchars($time['SubjectID']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php } else { ?>
@@ -82,5 +109,8 @@ try {
             </tbody>
         </table>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
