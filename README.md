@@ -29,7 +29,7 @@ The Bright Track School App is an educational platform designed to streamline th
 
 ### Teacher's Dashboard
 
-![Teacher's Dashboard](.teacher_dashboard.jpg)
+![Teacher's Dashboard](teacher_dashboard.jpg)
 
 ### Assign Timetable
 
