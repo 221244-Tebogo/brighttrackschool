@@ -18,7 +18,7 @@ The Bright Track School App is an educational platform designed to streamline th
 ## Mockups
 
 ### Authentication and Registration
-![Authentication and Registration](mockups/auth-register.jpg)
+![Authentication and Registration](../mockups/auth-register.jpg)
 
 ### Manage Teachers
 ![Manage Teachers](mockups/manage_teachers.jpg)
