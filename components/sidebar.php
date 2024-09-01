@@ -2,9 +2,7 @@
     <div class="handle" onmousedown="initResize(event)"></div>
     <div class="sidebar-inner">
         <header class="sidebar-header">
-            <button type="button" class="sidebar-burger">
-                <span class="material-symbols-outlined">menu</span>
-            </button>
+           
             <img src="../assets/images/Logo.svg" class="sidebar-logo" alt="Logo">
             <div class="user-profile">
                 <img src="../assets/images/user_placeholder.png" class="user-icon" alt="User Icon">
@@ -17,7 +15,7 @@
                 "school" => "Classes",
                 "schedule" => "Timetable",
                 "assessment" => "Reports",
-                "profile" => "Profile",
+                "person" => "Profile",
                 "logout" => "Logout"
             ];
             
@@ -54,7 +52,7 @@
                     "school" => "Classes",
                     "schedule" => "Timetable",
                     "assessment" => "Reports",
-                    "profile" => "Profile",
+                    "person" => "Profile",
                     "logout" => "Logout"
                 ];
                 

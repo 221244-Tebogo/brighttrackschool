@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="../assets/css/sidebar.css"> <!-- Ensure this path is correct -->
-    <!-- Link to Google's Material Symbols Outlined -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&display=swap">
 </head>
 <body>
@@ -18,7 +17,7 @@
                 <img src="../assets/images/Logo.svg" class="sidebar-logo" alt="Logo">
             </header>
             <nav class="sidebar-menu">
-                <button type="button" class="sidebar-button" onclick="window.location.href='admin_dashboard.php'">
+                <button type="button" class="sidebar-button" onclick="window.location.href='dashboard.php'">
                     <span class="material-symbols-outlined">dashboard</span>
                     <p class="sidebar-text">Dashboard</p>
                 </button>
