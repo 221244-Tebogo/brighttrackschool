@@ -21,7 +21,7 @@ The Bright Track School App is an educational platform designed to streamline th
 ![Authentication and Registration](mockups/auth-register.jpg)
 
 ### Manage Teachers
-![Manage Teachers](mockups/manange_teachers.jpg)
+![Manage Teachers](mockups/manage_teachers.jpg)
 
 ### Teacher's Dashboard
 ![Teacher's Dashboard](mockups/teachers_dashboard.jpg)
@@ -31,11 +31,23 @@ The Bright Track School App is an educational platform designed to streamline th
 
 ## Features
 
-- User registration and authentication system.
-- Management panels for students, teachers, and classes.
-- Dynamic timetable scheduling and adjustments.
-- Real-time updates on class assignments and schedules.
-- Administrative tools for user and system settings management.
+### Admin
+- **User Management**: Create, update, and delete user profiles for students and teachers.
+- **Class Management**: Add, update, and remove classes, manage class assignments.
+- **Timetable Management**: Create and adjust timetables for all classes, manage teacher assignments.
+- **Reporting**: Access to comprehensive reports on student performance, teacher activity, and class statistics.
+
+### Teacher
+- **Dashboard**: Overview of daily class schedules, upcoming assignments, and alerts.
+- **Class Management**: Manage student lists, class schedules, and submit student grades.
+- **Resource Sharing**: Upload and manage teaching materials and resources.
+- **Communication**: Tools to facilitate direct communication with students and parents.
+
+### Student
+- **Class Schedule**: View personal class schedules and upcoming school events.
+- **Assignment Submission**: Digital platform for submitting homework and receiving grades.
+- **Resource Access**: Download course materials, assignments, and notes.
+- **Performance Tracking**: Monitor personal academic performance and receive feedback from teachers.
 
 ## Tech stack
 - **Frontend:** HTML, CSS, JavaScript
