@@ -32,7 +32,7 @@ The Bright Track School App is an educational platform designed to streamline th
 
 ### Assign Timetable
 
-![Assign Timetable](./mockups/assign_timetable.jpg)
+![Assign Timetable](mockups/assign_timetable.jpg)
 
 ## Features
 
