@@ -20,7 +20,7 @@ The Bright Track School App is an educational platform designed to streamline th
 
 ### Authentication and Registration
 
-![Authentication and Registration](./mockups/auth-register.jpg)
+![Authentication and Registration](auth-register.jpg)
 
 ### Manage Teachers
 
@@ -28,7 +28,7 @@ The Bright Track School App is an educational platform designed to streamline th
 
 ### Teacher's Dashboard
 
-![Teacher's Dashboard](./mockups/teachers_dashboard.jpg)
+![Teacher's Dashboard](teacher_dashboard.jpg)
 
 ### Assign Timetable
 
@@ -56,10 +56,6 @@ The Bright Track School App is an educational platform designed to streamline th
 - **Assignment Submission**: Digital platform for submitting homework and receiving grades.
 - **Resource Access**: Download course materials, assignments, and notes.
 - **Performance Tracking**: Monitor personal academic performance and receive feedback from teachers.
-
-# <<<<<<< HEAD
-
-> > > > > > > 7848262c60504922a2b8fee3c255490969be5979
 
 ## Challenges
 
