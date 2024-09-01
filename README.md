@@ -63,6 +63,7 @@ During the development of the Bright Track School App, one of the significant ch
 
 After extensive research and troubleshooting, I consulted an IT professional who recommended using the following command to safely restart MySQL without grant tables, which allows for some administrative tasks to be performed without the usual user privilege checks:
 
+````bash
 sudo mysqld_safe --skip-grant-tables
 
 ## Demonstration Video
@@ -83,3 +84,4 @@ sudo mysqld_safe --skip-grant-tables
    git clone https://github.com/221244-Tebogo/brighttrackschool.git
    cd brighttrackschool
 
+````
