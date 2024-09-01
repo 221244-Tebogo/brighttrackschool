@@ -20,19 +20,20 @@ The Bright Track School App is an educational platform designed to streamline th
 
 ### Authentication and Registration
 
-![Authentication and Registration](./mockups/auth-register.jpg)
+![Authentication and Registration](auth-register.jpg)
+
 
 ### Manage Teachers
 
-![Manage Teachers](./mockups/manange_teachers.jpg)
+![Manage Teachers](.manange_teachers.jpg)
 
 ### Teacher's Dashboard
 
-![Teacher's Dashboard](./mockups/teachers_dashboard.jpg)
+![Teacher's Dashboard](.teacher_dashboard.jpg)
 
 ### Assign Timetable
 
-![Assign Timetable](mockups/assign_timetable.jpg)
+![Assign Timetable](.assign_timetable.jpg)
 
 ## Features
 
@@ -64,7 +65,12 @@ During the development of the Bright Track School App, one of the significant ch
 
 After extensive research and troubleshooting, I consulted an IT professional who recommended using the following command to safely restart MySQL without grant tables, which allows for some administrative tasks to be performed without the usual user privilege checks:
 
+<<<<<<< HEAD
+
+````bash
+=======
 ```bash
+>>>>>>> 7848262c60504922a2b8fee3c255490969be5979
 sudo mysqld_safe --skip-grant-tables
 
 ## Demonstration Video
@@ -84,4 +90,11 @@ sudo mysqld_safe --skip-grant-tables
    ```bash
    git clone https://github.com/221244-Tebogo/brighttrackschool.git
    cd brighttrackschool
-   ```
+<<<<<<< HEAD
+````
+
+=======
+
+```
+>>>>>>> 7848262c60504922a2b8fee3c255490969be5979
+```
