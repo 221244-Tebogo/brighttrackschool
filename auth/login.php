@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             
                             switch ($userType) {
                                 case 'admin':
-                                    header("Location: ../admin/admin_dashboard.php");
+                                    header("Location: ../admin/dashboard.php");
                                     break;
                                 case 'student':
                                     header("Location: ../student/index.php");
@@ -93,6 +93,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - BrightTrack School</title>
     <link rel="stylesheet" href="../assets/css/login.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 </head>
 <body>
     <div class="login-container" id="container">
