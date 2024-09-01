@@ -30,7 +30,7 @@ if ($subjectResult) {
 <head>
     <meta charset="UTF-8">
     <title>Timetable Management</title>
-    <link rel="stylesheet" href="../assets/css/calendar.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' rel='stylesheet' />
     <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
@@ -83,21 +83,29 @@ if ($subjectResult) {
     <div class="sidebar">
         <?php include '../components/admin_sidebar.php'; ?>
     </div>
-    <div class="content" style="margin-left: 260px; padding: 20px;">
-        <h1>Timetable Management</h1>
-        <div>
-            <label>Select Class:</label>
-            <select id="classSelect">
+    <div class="main-container" style="margin-left: 260px; padding: 20px;">
+        <h1 class="timetable_title">Timetable Management</h1>
+        <div class="dropdown-container">
+            <label for="classSelect">Select Class:</label>
+            <select id="classSelect" class="dropdown">
                 <option value="">Select Class</option>
                 <?= $classOptions ?>
             </select>
-            <label>Select Subject:</label>
-            <select id="subjectSelect">
+            <label for="subjectSelect">Select Subject:</label>
+            <select id="subjectSelect" class="dropdown">
                 <option value="">Select Subject</option>
                 <?= $subjectOptions ?>
             </select>
         </div>
-        <div id='calendar'></div>
+
+        <button class="timetable_button">Add Event</button>
+        <button class="timetable_button2">View Timetable</button>
+
+        <div class="new_timetable">
+            <div class="new_timetable_entries">
+                <div id='calendar'></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

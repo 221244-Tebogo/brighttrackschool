@@ -27,7 +27,7 @@ $(document).ready(function () {
           subjectID,
           formattedStart,
           formattedEnd
-        ); // Debugging
+        );
         $.ajax({
           url: "add_event.php",
           type: "POST",
@@ -39,12 +39,12 @@ $(document).ready(function () {
             subjectID: subjectID,
           },
           success: function (response) {
-            console.log("Server Response:", response); // Debugging
+            console.log("Server Response:", response);
             $("#calendar").fullCalendar("refetchEvents");
             alert("Added Successfully");
           },
           error: function (xhr, status, error) {
-            console.error("AJAX Error:", status, error); // Debugging
+            console.error("AJAX Error:", status, error);
           },
         });
       } else {
@@ -55,18 +55,18 @@ $(document).ready(function () {
       alert("Dropped on " + event.start.format() + " to " + event.end.format());
       var start = event.start.format("YYYY-MM-DD HH:mm:ss");
       var end = event.end.format("YYYY-MM-DD HH:mm:ss");
-      console.log("Updating Event:", event.title, event.id, start, end); // Debugging
+      console.log("Updating Event:", event.title, event.id, start, end);
       $.ajax({
         url: "update_event.php",
         type: "POST",
         data: { id: event.id, title: event.title, start: start, end: end },
         success: function (response) {
-          console.log("Update Response:", response); // Debugging
+          console.log("Update Response:", response);
           $("#calendar").fullCalendar("refetchEvents");
           alert("Event Updated");
         },
         error: function (xhr, status, error) {
-          console.error("Update AJAX Error:", status, error); // Debugging
+          console.error("Update AJAX Error:", status, error);
           revertFunc();
         },
       });

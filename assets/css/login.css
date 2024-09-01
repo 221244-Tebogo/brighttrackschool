@@ -26,46 +26,48 @@ body {
   align-items: center;
 }
 
-.login-container {
-  display: flex;
-  max-width: 1200px;
+.container {
   background: var(--white);
-  margin: auto;
-  width: 100%;
-  min-width: 320px;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, .2), 0 10px 10px rgba(0, 0, 0, .2);
+  position: relative;
   overflow: hidden;
+  width: 768px;
+  max-width: 100%;
+  min-height: 480px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
 }
 
-.login-container .login-form {
-  width: 50%;
-  box-sizing: border-box;
+.form-container {
+  flex: 1;
   padding: 50px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  background: var(--white);
 }
 
-.login-container .login-form h1 {
+.login-form h1 {
   font-weight: 500;
   color: var(--text);
   margin-bottom: 20px;
 }
 
-.login-container .login-form span {
+.login-form span {
   color: var(--text);
   font-size: 14px;
   margin-bottom: 20px;
 }
 
-.login-container .login-form input,
-.login-container .login-form select {
-  background: var(--white);
-  border: 1px solid var(--grey);
+.login-form input,
+.login-form select {
+  background: #eee;
+  border: none;
   padding: 12px 15px;
-  margin: 10px 0;
+  margin: 8px 0;
   width: 100%;
   color: var(--text);
   font-family: "Poppins", sans-serif;
@@ -74,13 +76,13 @@ body {
   border-radius: 5px;
 }
 
-.login-container .login-form input::placeholder {
+.login-form input::placeholder {
   color: var(--placeholder);
   font-weight: 300;
 }
 
-.login-container .login-form button {
-  border-radius: 50px;
+.login-button {
+  border-radius: 20px;
   border: 1px solid var(--primary-color);
   background: var(--primary-color);
   color: var(--white);
@@ -93,11 +95,11 @@ body {
   cursor: pointer;
 }
 
-.login-container .login-form button:hover {
+.login-button:hover {
   background: var(--login-cta-hover);
 }
 
-.login-container .login-form .link {
+.link {
   color: var(--primary-color);
   font-weight: 700;
   text-decoration: none;
@@ -105,83 +107,48 @@ body {
   margin-top: 20px;
 }
 
-.login-container .login-form .link:hover {
+.link:hover {
   text-decoration: underline;
 }
 
-.login-container .login-form .custom-check {
-  display: flex;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.login-container .login-form .custom-check input[type="checkbox"] {
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-.login-container .onboarding {
-  width: 50%;
-  background: #E4F4FF; 
-  color: #666666;
-  padding: 40px;
+.overlay-container {
+  flex: 1;
+  background: #E4F4FF;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   text-align: center;
+  padding: 50px;
 }
 
-.login-container .onboarding .onboarding-logo {
-  max-width: 50%; 
-  justify-content: center;
-  margin-bottom: 20px;
+.overlay-container h1 {
+  font-weight: bold;
+  color: var(--primary-color);
 }
 
-@media screen and (min-width: 768px) {
-  .login-container .onboarding {
-    display: flex;
+.overlay-container p {
+  font-size: 14px;
+  color: #666666;
+}
+
+.ghost {
+  background: transparent;
+  border-color: var(--primary-color);
+}
+
+.ghost:hover {
+  background: var(--primary-color);
+  color: var(--white);
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
   }
-}
 
-
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    padding-top: 60px;
-}
-
-/* Modal Content/Box */
-.modal-content {
-    background-color: #fefefe;
-    margin: 5% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-    max-width: 400px;
-    border-radius: 10px;
-    text-align: center;
-}
-
-/* The Close Button */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+  .login-form,
+  .overlay-container {
+    width: 100%;
+  }
 }

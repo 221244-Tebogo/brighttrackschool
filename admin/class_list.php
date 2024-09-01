@@ -47,7 +47,7 @@ if ($result->num_rows > 0) {
     </table>
 
     <h1>Manage Subjects</h1>
-    <a href="add_subject.php" class="add-new">Add New Subject</a>
+    <a href="add_subject.php" class="new_timetable_entries">Add New Subject</a>
     <table>
         <thead>
             <tr>
