@@ -1,16 +1,15 @@
 <?php
 include('config.php');
-include('header.php');  // Your site's header
+include('header.php'); 
 session_start();
 
-$studentID = $_SESSION['student_id'] ?? 0; // Change according to how you manage sessions
+$studentID = $_SESSION['student_id'] ?? 0;
 
 if ($studentID == 0) {
     echo "You are not logged in.";
     exit;
 }
 
-// Corrected query: assuming there is a Class table and Timetable table with ClassID
 $sql = "SELECT c.ClassName, t.Day, t.StartTime, t.EndTime 
         FROM Enrollment e 
         JOIN Class c ON e.ClassID = c.ClassID 
@@ -43,7 +42,6 @@ include('footer.php');
 </head>
 <body>
     <h1>Student Schedule</h1>
-    <!-- Schedule will be loaded here from PHP script -->
 </body>
 </html>
 

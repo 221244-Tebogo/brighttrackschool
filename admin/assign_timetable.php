@@ -52,9 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select id="classSelect" name="classID" class="form-control" required>
                 <option value="">Select a Class</option>
                 <?php
-                $classes = $conn->query("SELECT ClassID, ClassName FROM Class ORDER BY ClassName");
+                $classes = $conn->query("SELECT ClassID, Grade FROM Class ORDER BY Grade");
                 while ($class = $classes->fetch_assoc()) {
-                    echo "<option value='{$class['ClassID']}'>{$class['ClassName']}</option>";
+                    echo "<option value='{$class['ClassID']}'>{$class['Grade']}</option>";
                 }
                 ?>
             </select>

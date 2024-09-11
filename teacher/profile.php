@@ -1,38 +1,23 @@
 <?php
-require_once '../config.php';
-$teacherID = $_GET['id'] ?? null;
-$teacher = null;
-
-if ($teacherID) {
-    $stmt = $conn->prepare("SELECT * FROM Teacher WHERE TeacherID = ?");
-    $stmt->bind_param("i", $teacherID);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows == 1) {
-        $teacher = $result->fetch_assoc();
-    }
-    $stmt->close();
+session_start();
+if (!isset($_SESSION['TeacherID'])) {
+    header("Location: /brighttrackschool/auth/login.php");
+    exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $firstName = $_POST['firstName'];
-    $lastName = $_POST['lastName'];
-    $email = $_POST['email'];
+$teacherID = $_SESSION['TeacherID'];
+include('../config.php');
 
-    $sql = "UPDATE Teacher SET FirstName=?, LastName=?, Email=? WHERE TeacherID=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssi", $firstName, $lastName, $email, $teacherID);
-    if ($stmt->execute()) {
-        echo "<p>Teacher profile updated successfully!</p>";
-        // Refresh data
-        $teacher['FirstName'] = $firstName;
-        $teacher['LastName'] = $lastName;
-        $teacher['Email'] = $email;
-    } else {
-        echo "<p>Error updating teacher profile: " . $stmt->error . "</p>";
-    }
-    $stmt->close();
+$stmt = $conn->prepare("SELECT * FROM Teacher WHERE TeacherID = ?");
+$stmt->bind_param("i", $teacherID);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($result->num_rows == 1) {
+    $teacher = $result->fetch_assoc();
+} else {
+    echo "<p>Teacher profile not found.</p>";
 }
+$stmt->close();
 $conn->close();
 ?>
 
@@ -40,28 +25,42 @@ $conn->close();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Teacher Profile</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Profile</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css"> 
 </head>
 <body>
-    <div class="content">
-        <h1>Edit Teacher Profile</h1>
-        <?php if ($teacher): ?>
-        <form action="edit_teacher.php?id=<?= htmlspecialchars($teacherID) ?>" method="post">
-            <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" name="firstName" value="<?= htmlspecialchars($teacher['FirstName']) ?>" required>
+    <div class="container-grid">
+        <aside class="navbar-left">
+            <?php include('../components/teacher_sidebar.php'); ?>
+        </aside>
 
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName" value="<?= htmlspecialchars($teacher['LastName']) ?>" required>
-
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" value="<?= htmlspecialchars($teacher['Email']) ?>" required>
-
-            <button type="submit">Update Profile</button>
-        </form>
-        <?php else: ?>
-        <p>Teacher profile not found.</p>
-        <?php endif; ?>
+        <main class="main-content">
+            <div class="welcome">
+                <h1 class="display-4">
+                    <span class="material-symbols-outlined">person</span>
+                    Edit your profile here, <?= htmlspecialchars($teacher['FirstName']) ?>!
+                </h1>
+            </div>
+            <div class="profile-header">
+                <h1>Teacher Profile</h1>
+            </div>
+            <div class="profile-overview">
+                <?php if ($teacher): ?>
+                    <div class="profile-details">
+                        <p><strong>Name:</strong> <?= htmlspecialchars($teacher['FirstName']) ?> <?= htmlspecialchars($teacher['LastName']) ?></p>
+                        <p><strong>Email:</strong> <?= htmlspecialchars($teacher['Email']) ?></p>
+                        <p><strong>Bio:</strong> <?= htmlspecialchars($teacher['Bio']) ?></p>
+                        <a href="profile_update.php" class="btn btn-primary">Edit Profile</a>
+                    </div>
+                <?php else: ?>
+                    <p>Profile not found.</p>
+                <?php endif; ?>
+            </div>
+        </main>
     </div>
+
+    <?php include('../components/footer.php'); ?>
 </body>
 </html>

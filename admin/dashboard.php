@@ -6,7 +6,26 @@ error_reporting(E_ALL);
 include('../config.php'); 
 
 try {
-    
+
+    $stmtStudents = $conn->prepare("SELECT COUNT(*) AS studentCount FROM Student");
+    if (!$stmtStudents) {
+        throw new Exception("Error preparing statement for students: " . $conn->error);
+    }
+    $stmtStudents->execute();
+    $stmtStudents->bind_result($studentCount);
+    $stmtStudents->fetch();
+    $stmtStudents->close();
+
+    $stmtTeachers = $conn->prepare("SELECT COUNT(*) AS teacherCount FROM Teacher");
+    if (!$stmtTeachers) {
+        throw new Exception("Error preparing statement for teachers: " . $conn->error);
+    }
+    $stmtTeachers->execute();
+    $stmtTeachers->bind_result($teacherCount);
+    $stmtTeachers->fetch();
+    $stmtTeachers->close();
+
+  
     $stmtAssignments = $conn->prepare("SELECT Name, DueDate, Description FROM Assignment ORDER BY DueDate DESC");
     if (!$stmtAssignments) {
         throw new Exception("Error preparing statement for assignments: " . $conn->error);
@@ -20,11 +39,7 @@ try {
     $stmtAssignments->close();
 
 
-    $stmtTimetable = $conn->prepare("
-        SELECT Day, StartTime, EndTime, SubjectID 
-        FROM Timetable 
-        ORDER BY Day, StartTime
-    ");
+    $stmtTimetable = $conn->prepare("SELECT Day, StartTime, EndTime, SubjectID FROM Timetable ORDER BY Day, StartTime");
     if (!$stmtTimetable) {
         throw new Exception("Error preparing statement for timetable: " . $conn->error);
     }
@@ -47,42 +62,75 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/sidebar.css"></head>
-<body>
-    <div class="sidebar">
-        <?php include '../components/admin_sidebar.php'; ?>
-    </div>
-    <div class="container mt-4">
-        <h1 class="mb-4">Dashboard</h1>
-        
-        <h2>Upcoming Assignments</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Due Date</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($assignments)) { ?>
-                    <?php foreach ($assignments as $assignment): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($assignment['DueDate']); ?></td>
-                            <td><?php echo htmlspecialchars($assignment['Name']); ?></td>
-                            <td><?php echo htmlspecialchars($assignment['Description']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php } else { ?>
-                    <tr><td colspan="3">No assignments available.</td></tr>
-                <?php } ?>
-            </tbody>
-        </table>
+    <link rel="stylesheet" href="../assets/css/sidebar.css">
+    <link rel="stylesheet" href="../assets/css/calendar.css">
 
+</head>
+<body>
+</aside>
+    <div class="container-grid">
+    
+    <aside class="navbar-left">
+      <?php include('../components/admin_sidebar.php'); ?>
+    </aside>
+
+
+    <main class="content">
+      <div class="welcome">
+        <h1 class="display-4">
+          <span class="material-symbols-outlined">person</span>
+          Welcome, 
+        </h1>
+        <p class="lead">Here you can manage teachers, students, assignments and timetable.</p>
+      </div>
+        <div class="main-overview">
+            <div class="overviewcard">
+                <div class="icon-text">
+                    <div class="icon-container">
+                        <span class="material-symbols-outlined">group</span>
+                    </div>
+                    <div class="overview-info">
+                        <h4>Students</h4>
+                        <p><?php echo $studentCount; ?> registered students</p>
+                    </div>
+                </div>
+            </div>
+            <div class="overviewcard">
+                <div class="icon-text">
+                    <div class="icon-container">
+                        <span class="material-symbols-outlined">school</span>
+                    </div>
+                    <div class="overview-info">
+                        <h4>Teachers</h4>
+                        <p><?php echo $teacherCount; ?> registered teachers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+     
+        <div class="small-calendar">
+            <?php
+            $days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+            echo '<div class="day-names">';
+            foreach ($days as $day) {
+                echo '<span class="day">' . $day . '</span>';
+            }
+            echo '</div>';
+
+            $num_days = date('t');
+            echo '<div class="days">';
+            for ($i = 1; $i <= $num_days; $i++) {
+                echo '<span class="day_num">' . $i . '</span>';
+            }
+            echo '</div>';
+            ?>
+        </div>
+
+        
         <h2>Timetable</h2>
         <table class="table table-striped">
             <thead>

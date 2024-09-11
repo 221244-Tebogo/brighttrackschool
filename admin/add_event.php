@@ -9,7 +9,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $classID = 1;
     $subjectID = 1;
 
-    // Convert $start and $end into appropriate SQL time format
     $startTime = date('H:i:s', strtotime($start));
     $endTime = date('H:i:s', strtotime($end));
 

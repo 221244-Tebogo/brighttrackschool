@@ -6,7 +6,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $marks = $_POST['marks'];
     $comment = $_POST['comment'];
 
-    // Check if the submission exists and retrieve the associated student
     $checkSql = "SELECT * FROM Submission WHERE SubmissionID = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param("i", $submissionID);
@@ -14,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $checkStmt->get_result();
 
     if ($row = $result->fetch_assoc()) {
-        // Update the submission with the grade and comment
         $updateSql = "UPDATE Submission SET Grade = ?, Comment = ? WHERE SubmissionID = ?";
         $updateStmt = $conn->prepare($updateSql);
         $updateStmt->bind_param("isi", $marks, $comment, $submissionID);

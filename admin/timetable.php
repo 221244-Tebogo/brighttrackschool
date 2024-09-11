@@ -1,7 +1,6 @@
 <?php
 require_once '../config.php';
 
-// Fetch classes and subjects for dropdowns
 $classOptions = '';
 $classQuery = "SELECT ClassID, ClassName FROM Class ORDER BY ClassName";
 $classResult = $conn->query($classQuery);

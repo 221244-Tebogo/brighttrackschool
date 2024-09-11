@@ -1,7 +1,6 @@
 <?php
 require_once '../config.php';
 
-// Handle AJAX requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
     $response = ['success' => false, 'message' => 'Unknown error'];
@@ -75,7 +74,6 @@ if ($result->num_rows > 0) {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,6 +83,24 @@ if ($result->num_rows > 0) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/sidebar.css">
+    <style>
+        /* Sticky heading to remain at the top */
+        h1.sticky-heading {
+            position: -webkit-sticky; /* For Safari */
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            z-index: 1000;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
+        }
+
+        /* Set a max height for the table and enable scrolling */
+        .table-container {
+            max-height: 400px; /* Adjust height as needed */
+            overflow-y: auto; /* Scrollable */
+        }
+    </style>
 </head>
 <body>
 <div class="navbar">
@@ -93,7 +109,7 @@ if ($result->num_rows > 0) {
 <div class="container mt-4">
 
 <div class="content">
-    <h1>Manage Teachers</h1>
+    <h1 class="sticky-heading">Manage Teachers</h1>
     <button class="btn btn-primary mb-3" onclick="showAddForm()">Add New Teacher</button>
     <div id="addEditForm" style="display:none;" class="mb-4">
         <input type="hidden" id="teacherId">
@@ -108,31 +124,34 @@ if ($result->num_rows > 0) {
         <button class="btn btn-success" onclick="saveTeacher()">Save</button>
         <button class="btn btn-secondary" onclick="hideForm()">Cancel</button>
     </div>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Gender</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($teachers as $teacher): ?>
-            <tr id="teacher-<?= $teacher['TeacherID'] ?>">
-                <td><?= htmlspecialchars($teacher['FirstName']) ?></td>
-                <td><?= htmlspecialchars($teacher['LastName']) ?></td>
-                <td><?= htmlspecialchars($teacher['Email']) ?></td>
-                <td><?= htmlspecialchars($teacher['Gender']) ?></td>
-                <td>
-                    <button class="btn btn-success btn-sm" onclick="editTeacher(<?= $teacher['TeacherID'] ?>)">Edit</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteTeacher(<?= $teacher['TeacherID'] ?>)">Delete</button>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+
+    <div class="table-container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($teachers as $teacher): ?>
+                <tr id="teacher-<?= $teacher['TeacherID'] ?>">
+                    <td><?= htmlspecialchars($teacher['FirstName']) ?></td>
+                    <td><?= htmlspecialchars($teacher['LastName']) ?></td>
+                    <td><?= htmlspecialchars($teacher['Email']) ?></td>
+                    <td><?= htmlspecialchars($teacher['Gender']) ?></td>
+                    <td>
+                        <button class="btn btn-success btn-sm" onclick="editTeacher(<?= $teacher['TeacherID'] ?>)">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteTeacher(<?= $teacher['TeacherID'] ?>)">Delete</button>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 <script>
 function showAddForm() {
@@ -142,6 +161,11 @@ function showAddForm() {
     $('#email').val('');
     $('#gender').val('');
     $('#addEditForm').show();
+
+    // Scroll to the form
+    $('html, body').animate({
+        scrollTop: $("#addEditForm").offset().top
+    }, 500);
 }
 
 function hideForm() {
@@ -156,6 +180,11 @@ function editTeacher(id) {
     $('#email').val(row.find('td:eq(2)').text());
     $('#gender').val(row.find('td:eq(3)').text());
     $('#addEditForm').show();
+
+    // Scroll to the form
+    $('html, body').animate({
+        scrollTop: $("#addEditForm").offset().top
+    }, 500);
 }
 
 function saveTeacher() {

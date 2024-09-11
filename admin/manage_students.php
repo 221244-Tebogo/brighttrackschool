@@ -5,18 +5,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
     $response = ['success' => false, 'message' => 'Unknown error'];
     
+    $firstName = $_POST['first_name'] ?? '';
+    $lastName = $_POST['last_name'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $gender = $_POST['gender'] ?? '';
+    $dob = $_POST['dob'] ?? '';
+    $grade = $_POST['grade'] ?? '';
+
     switch ($_POST['action']) {
         case 'add':
-            $firstName = $_POST['first_name'];
-            $lastName = $_POST['last_name'];
-            $email = $_POST['email'];
-            $gender = $_POST['gender'];
-            $dob = $_POST['dob'];
-
-            $sql = "INSERT INTO Student (FirstName, LastName, Email, Gender, DOB) VALUES (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO Student (FirstName, LastName, Email, Gender, DOB, ClassID) 
+                    SELECT ?, ?, ?, ?, ?, ClassID FROM Class WHERE Grade = ? LIMIT 1";
             $stmt = $conn->prepare($sql);
             if ($stmt) {
-                $stmt->bind_param("sssss", $firstName, $lastName, $email, $gender, $dob);
+                $stmt->bind_param("ssssss", $firstName, $lastName, $email, $gender, $dob, $grade);
                 if ($stmt->execute()) {
                     $response = ['success' => true, 'message' => 'Student added successfully'];
                 } else {
@@ -27,17 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
         
         case 'edit':
-            $id = $_POST['id'];
-            $firstName = $_POST['first_name'];
-            $lastName = $_POST['last_name'];
-            $email = $_POST['email'];
-            $gender = $_POST['gender'];
-            $dob = $_POST['dob'];
-
-            $sql = "UPDATE Student SET FirstName=?, LastName=?, Email=?, Gender=?, DOB=? WHERE StudentID=?";
+            $id = $_POST['id'] ?? 0;
+            $sql = "UPDATE Student SET FirstName=?, LastName=?, Email=?, Gender=?, DOB=?, ClassID=(SELECT ClassID FROM Class WHERE Grade = ? LIMIT 1) 
+                    WHERE StudentID=?";
             $stmt = $conn->prepare($sql);
             if ($stmt) {
-                $stmt->bind_param("sssssi", $firstName, $lastName, $email, $gender, $dob, $id);
+                $stmt->bind_param("sssssii", $firstName, $lastName, $email, $gender, $dob, $grade, $id);
                 if ($stmt->execute()) {
                     $response = ['success' => true, 'message' => 'Student updated successfully'];
                 } else {
@@ -48,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
         
         case 'delete':
-            $id = $_POST['id'];
+            $id = $_POST['id'] ?? 0;
             $sql = "DELETE FROM Student WHERE StudentID=?";
             $stmt = $conn->prepare($sql);
             if ($stmt) {
@@ -66,16 +63,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-$sql = "SELECT StudentID, FirstName, LastName, Email, Gender, DOB FROM Student";
+// Fetch all students along with their grade
+$sql = "SELECT s.StudentID, s.FirstName, s.LastName, s.Email, s.Gender, s.DOB, c.Grade 
+        FROM Student s 
+        LEFT JOIN Class c ON s.ClassID = c.ClassID";
 $result = $conn->query($sql);
 $students = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $students[] = $row;
     }
+} else {
+    echo "Error fetching students: " . $conn->error;
 }
-?>
 
+// HTML code for displaying and managing students
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -90,7 +93,6 @@ if ($result->num_rows > 0) {
     <?php include '../components/admin_sidebar.php'; ?>
 </div>
 <div class="container mt-4">
-
 <div class="content">
     <h1>Manage Students</h1>
     <button class="btn btn-primary" onclick="showAddForm()">Add New Student</button>
@@ -105,6 +107,15 @@ if ($result->num_rows > 0) {
             <option value="Other">Other</option>
         </select>
         <input type="date" id="dob" class="form-control mb-2" placeholder="Date of Birth">
+        <select id="grade" class="form-control mb-2">
+            <?php
+            $gradeSql = "SELECT DISTINCT Grade FROM Class ORDER BY Grade";
+            $gradeResult = $conn->query($gradeSql);
+            while ($grade = $gradeResult->fetch_assoc()) {
+                echo "<option value='" . $grade['Grade'] . "'>" . htmlspecialchars($grade['Grade']) . "</option>";
+            }
+            ?>
+        </select>
         <button class="btn btn-success" onclick="saveStudent()">Save</button>
         <button class="btn btn-secondary" onclick="hideForm()">Cancel</button>
     </div>
@@ -116,6 +127,7 @@ if ($result->num_rows > 0) {
                 <th>Email</th>
                 <th>Gender</th>
                 <th>DOB</th>
+                <th>Grade</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -127,6 +139,7 @@ if ($result->num_rows > 0) {
                 <td><?= htmlspecialchars($student['Email']) ?></td>
                 <td><?= htmlspecialchars($student['Gender']) ?></td>
                 <td><?= htmlspecialchars($student['DOB']) ?></td>
+                <td><?= htmlspecialchars($student['Grade']) ?></td>
                 <td>
                     <button class="btn btn-success btn-sm" onclick="editStudent(<?= $student['StudentID'] ?>)">Edit</button>
                     <button class="btn btn-danger btn-sm" onclick="deleteStudent(<?= $student['StudentID'] ?>)">Delete</button>
@@ -144,6 +157,7 @@ function showAddForm() {
     $('#email').val('');
     $('#gender').val('');
     $('#dob').val('');
+    $('#grade').val(''); // Reset grade dropdown
     $('#addEditForm').show();
 }
 
@@ -159,6 +173,7 @@ function editStudent(id) {
     $('#email').val(row.find('td:eq(2)').text());
     $('#gender').val(row.find('td:eq(3)').text());
     $('#dob').val(row.find('td:eq(4)').text());
+    $('#grade').val(row.find('td:eq(6)').text()); // Set the grade dropdown based on the current value
     $('#addEditForm').show();
 }
 
@@ -172,7 +187,8 @@ function saveStudent() {
         last_name: $('#lastName').val(),
         email: $('#email').val(),
         gender: $('#gender').val(),
-        dob: $('#dob').val()
+        dob: $('#dob').val(),
+        grade: $('#grade').val() // Send the grade instead of classId
     }, function(response) {
         alert(response.message);
         if (response.success) {

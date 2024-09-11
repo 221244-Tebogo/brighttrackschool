@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Teacher Nav</title>
     <link rel="stylesheet" href="../assets/css/sidebar.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&display=swap">
 </head>
@@ -13,31 +13,28 @@
             <header class="sidebar-header">
                 <img src="../assets/images/Logo.svg" class="sidebar-logo" alt="Logo">
             </header>
+
             <nav class="sidebar-menu">
                 <button type="button" class="sidebar-button" onclick="window.location.href='dashboard.php'">
                     <span class="material-symbols-outlined">dashboard</span>
                     <p class="sidebar-text">Dashboard</p>
                 </button>
-                <button type="button" class="sidebar-button" onclick="window.location.href='manage_teachers.php'">
-                    <span class="material-symbols-outlined">person</span>
-                    <p class="sidebar-text">Teachers</p>
-                </button>
-                <button type="button" class="sidebar-button" onclick="window.location.href='manage_students.php'">
-                    <span class="material-symbols-outlined">school</span>
-                    <p class="sidebar-text">Students</p>
-                </button>
-                <button type="button" class="sidebar-button" onclick="window.location.href='class_list.php'">
-                    <span class="material-symbols-outlined">class</span>
-                    <p class="sidebar-text">Classes</p>
-                </button>
-                <button type="button" class="sidebar-button" onclick="window.location.href='assign_timetable.php'">
+
+                <button type="button" class="sidebar-button" onclick="window.location.href='timetable.php'">
                     <span class="material-symbols-outlined">schedule</span>
                     <p class="sidebar-text">Timetable</p>
                 </button>
-                <button type="button" class="sidebar-button" onclick="window.location.href='add_subject.php'">
-                    <span class="material-symbols-outlined">book</span>
-                    <p class="sidebar-text">Subjects</p>
+
+                <button type="button" class="sidebar-button" onclick="window.location.href='create_assignment.php'">
+                    <span class="material-symbols-outlined">assignment</span>
+                    <p class="sidebar-text">Assignments</p>
                 </button>
+
+                <button type="button" class="sidebar-button" onclick="window.location.href='profile.php'">
+                    <span class="material-symbols-outlined">person</span>
+                    <p class="sidebar-text">Profile</p>
+                </button>
+
                 <button type="button" class="sidebar-button" onclick="window.location.href='../auth/logout.php'">
                     <span class="material-symbols-outlined">logout</span>
                     <p class="sidebar-text">Logout</p>
@@ -45,6 +42,5 @@
             </nav>
         </div>
     </aside>
-
 </body>
 </html>

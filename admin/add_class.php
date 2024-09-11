@@ -1,7 +1,6 @@
 <?php
 require_once '../config.php';
 
-// Fetch all teachers for the dropdown
 $teacherOptions = "";
 $teacherSql = "SELECT TeacherID, FirstName, LastName FROM Teacher ORDER BY LastName, FirstName";
 $teachers = $conn->query($teacherSql);

@@ -1,5 +1,4 @@
 <?php
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -13,7 +12,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $conn->real_escape_string($_POST['email']);
     $password = $_POST['password'];
 
-    // Step 1: Get the user type from UserTypeMapping
     $stmt1 = $conn->prepare("SELECT UserType FROM UserTypeMapping WHERE Email = ?");
     if (!$stmt1) {
         $errorMessage = "Error preparing UserTypeMapping query: " . $conn->error;
@@ -24,16 +22,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result->num_rows === 1) {
             $userType = $result->fetch_assoc()['UserType'];
-            $stmt1->close();  // Close the first statement
+            $stmt1->close(); 
 
-            // Step 2: Prepare the query based on the user type
+
             $userQuery = "";
             if ($userType === 'admin') {
-                $userQuery = "SELECT Password, UserName FROM Admin WHERE Email = ?";
+                $userQuery = "SELECT AdminID, Password, UserName FROM Admin WHERE Email = ?";
             } elseif ($userType === 'student') {
-                $userQuery = "SELECT Password, FirstName, LastName FROM Student WHERE Email = ?";
+                $userQuery = "SELECT StudentID, Password, FirstName, LastName FROM Student WHERE Email = ?";
             } elseif ($userType === 'teacher') {
-                $userQuery = "SELECT Password, FirstName, LastName FROM Teacher WHERE Email = ?";
+                $userQuery = "SELECT TeacherID, Password, FirstName, LastName FROM Teacher WHERE Email = ?";
             } else {
                 $errorMessage = "Invalid user type.";
             }
@@ -50,22 +48,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if ($passwordResult->num_rows === 1) {
                         $userData = $passwordResult->fetch_assoc();
                         if (password_verify($password, $userData['Password'])) {
+                          
                             $_SESSION['email'] = $email;
                             $_SESSION['user_name'] = isset($userData['UserName']) ? $userData['UserName'] : $userData['FirstName'] . ' ' . $userData['LastName'];
                             $_SESSION['user_type'] = $userType;
 
-                            
-                            switch ($userType) {
-                                case 'admin':
-                                    header("Location: ../admin/dashboard.php");
-                                    break;
-                                case 'student':
-                                    header("Location: ../student/index.php");
-                                    break;
-                                case 'teacher':
-                                    header("Location: ../teacher/dashboard.php");
-                                    break;
+                            if ($userType === 'teacher') {
+                                $_SESSION['TeacherID'] = $userData['TeacherID'];
+                                header("Location: ../teacher/dashboard.php");
+                            } elseif ($userType === 'student') {
+                                $_SESSION['StudentID'] = $userData['StudentID'];
+                                header("Location: ../student/index.php");
+                            } elseif ($userType === 'admin') {
+                                $_SESSION['AdminID'] = $userData['AdminID'];
+                                header("Location: ../admin/dashboard.php");
                             }
+
                             exit;
                         } else {
                             $errorMessage = "Invalid password.";
@@ -85,7 +83,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -94,25 +91,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Login - BrightTrack School</title>
     <link rel="stylesheet" href="../assets/css/login.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
 </head>
 <body>
-    <div class="login-container" id="container">
-        <div class="login-form">
+<div class="container" id="container">
+    <div class="form-container sign-in-container">
+        <form action="login.php" method="POST">
             <h1>Login</h1>
-            <form action="login.php" method="POST">
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <button type="submit" class="login-button">Login</button>
-            </form>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit" class="login-button">Login</button>
             <a href="register.php" class="link">Don't have an account? Register</a>
-        </div>
-        <div class="onboarding">
-            <img src="../assets/images/Logo.svg" alt="BrightTrack School Logo" class="onboarding-logo">
-            <h2>Welcome Back to BrightTrack School!</h2>
-            <p>We're glad to see you again. Log in to access your account and continue your learning journey.</p>
+        </form>
+    </div>
+
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-right">
+                <img src="../assets/images/Logo.svg" alt="BrightTrack School Logo" class="onboarding-logo">
+                <h1>Welcome Back!</h1>
+                <p>We're glad to see you again. Log in to access your account and continue your learning journey.</p>
+            </div>
         </div>
     </div>
+</div>
+
 
     <?php if ($errorMessage): ?>
     <div id="errorModal" class="modal">

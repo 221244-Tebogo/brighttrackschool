@@ -1,154 +1,278 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap");
-
-:root {
-  --bodybg: #ffffff;
-  --primary-color: #0F3F62;
-  --grey: #d6d6d6;
-  --placeholder: #969696;
-  --white: #fff;
-  --text: #333;
-  --slider-bg: #E4F4FF;
-  --login-cta-hover: #0F3F62;
+root {
+    --color-bg: #28284e;
+    --color-text: #697181;
+    --gradient: linear-gradient(45deg, #34A1F0, #0F3F62);
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  background: var(--bodybg);
   font-family: 'Poppins', sans-serif;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: #f6f5f7;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: -20px 0 50px;
+	margin-top: 20px;
+    color: ;
+}
+
+h1 {
+    font-weight: 600; 
+    margin: 0;
+}
+
+p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 20px;
+    letter-spacing: .5px;
+    margin: 20px 0 30px;
+}
+
+span {
+    font-size: 12px;
+}
+
+a {
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0;
 }
 
 .container {
-  background: var(--white);
-  border-radius: 10px;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, .2), 0 10px 10px rgba(0, 0, 0, .2);
-  position: relative;
-  overflow: hidden;
-  width: 768px;
-  max-width: 100%;
-  min-height: 480px;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
+    border-radius: 10px;
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-height: 480px;
+    height: 100vh;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+}
+
+
+@media (min-width: 992px) {
+    .container, .container-lg, .container-md, .container-sm {
+        max-width: 1280px;
+    }
 }
 
 .form-container {
-  flex: 1;
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: var(--white);
+    background: #ffffff;
+    color: #666666;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+
+}
+.form-container form {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    padding:  20px 100px;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
-.login-form h1 {
-  font-weight: 500;
-  color: var(--text);
-  margin-bottom: 20px;
+.form-container form input {
+    margin: 10px 0;
+    padding: 15px;
+    border: 1px solid #666666; 
+    border-radius: 10px;
+    width: 100%;
+    background-color: #fff;
+    color: #333;
+    font-size: 16px;
+    box-sizing: border-box; 
 }
 
-.login-form span {
-  color: var(--text);
-  font-size: 14px;
-  margin-bottom: 20px;
+.form-container form button {
+    padding: 15px;
+    border: 2px solid #0F3F62;
+    color: #ffffff;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.login-form input,
-.login-form select {
-  background: #eee;
-  border: none;
-  padding: 12px 15px;
-  margin: 8px 0;
-  width: 100%;
-  color: var(--text);
-  font-family: "Poppins", sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  border-radius: 5px;
+.form-container form button:hover {
+    background: linear-gradient(45deg, #34A1F0, #0F3F62);
+    color: #fff;
 }
 
-.login-form input::placeholder {
-  color: var(--placeholder);
-  font-weight: 300;
+.form-container form a {
+    color: #666666;
+    margin-top: 15px;
 }
 
-.login-button {
-  border-radius: 20px;
-  border: 1px solid var(--primary-color);
-  background: var(--primary-color);
-  color: var(--white);
-  font-size: 14px;
-  font-weight: 500;
-  padding: 12px 45px;
-  margin-top: 20px;
-  text-transform: uppercase;
-  transition: background 0.2s ease;
-  cursor: pointer;
+.social-container {
+    margin: 20px 0;
 }
 
-.login-button:hover {
-  background: var(--login-cta-hover);
+.social-container a {
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+    height: 40px;
+    width: 40px;
 }
 
-.link {
-  color: var(--primary-color);
-  font-weight: 700;
-  text-decoration: none;
-  font-size: 14px;
-  margin-top: 20px;
+.registration-container input {
+    background: #eee;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
 }
 
-.link:hover {
-  text-decoration: underline;
+button {
+    border-radius: 20px;
+    border: 1px solid #ff4b2b;
+    background: #0F3F62;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+}
+
+button:active {
+    transform: scale(.95);
+}
+
+button:focus {
+    outline: none;
+}
+
+button.ghost {
+    background: transparent;
+    border-color: #fff;
+}
+
+.registration-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all .6s ease-in-out;
+}
+
+.sign-in-container {
+    left: 0;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    
+}
+
+.sign-up-container {
+    left: 0;
+    width: 50%;
+    z-index: 1;
+    opacity: 0;
 }
 
 .overlay-container {
-  flex: 1;
-  background: #E4F4FF;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 50px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform .6s ease-in-out;
+    z-index: 100;
 }
 
-.overlay-container h1 {
-  font-weight: bold;
-  color: var(--primary-color);
+.overlay {
+    background: #EBF6FE;
+    color: #666666;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateY(0);
+    transition: transform .6s ease-in-out;
+    font-family: 'Poppins', sans-serif;
+
 }
 
-.overlay-container p {
-  font-size: 14px;
-  color: #666666;
-}
-
-.ghost {
-  background: transparent;
-  border-color: var(--primary-color);
-}
-
-.ghost:hover {
-  background: var(--primary-color);
-  color: var(--white);
-}
-
-@media screen and (max-width: 768px) {
-  .container {
+.overlay-panel {
+    position: absolute;
+    top: 0;
+    display: flex;
     flex-direction: column;
-  }
+    justify-content: center;
+    align-items: center;
+    padding: 0 40px;
+    height: 100%;
+    width: 50%;
+    text-align: center;
+    transform: translateY(0);
+    transition: transform .6s ease-in-out;
+}
 
-  .login-form,
-  .overlay-container {
+.overlay-right {
+    right: 0;
+    transform: translateY(0);
+}
+
+.overlay-left {
+    transform: translateY(-20%);
+}
+
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-  }
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.modal-content .close {
+    float: right;
+    cursor: pointer;
+}
+
+/* Use more specific selectors to override Bootstrap */
+.form-container form input,
+.form-container form select {
+    margin: 10px 0;
+    padding: 15px;
+    border: 1px solid #666 !important; /* Add !important if needed to override */
+    border-radius: 5px;
+    width: 100%;
+    background-color: #fff;
+    color: #333 !important; /* Add !important to ensure it overrides */
+    font-size: 16px;
+    box-sizing: border-box;
 }

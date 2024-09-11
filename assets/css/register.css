@@ -1,0 +1,206 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap");
+
+:root {
+    --color-bg: #28284e;
+    --color-text: #697181;
+    --gradient: linear-gradient(45deg, #34A1F0, #0F3F62);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f6f5f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 100%;
+    min-height: 480px;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
+@media (min-width: 992px) {
+    .container {
+        max-width: 1280px;
+    }
+}
+
+.form-container {
+    width: 50%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #ffffff;
+    color: #666666;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 100px;
+    background-color: #ffffff;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+h1 {
+    font-weight: 600; 
+    margin: 0;
+}
+
+
+input, select {
+    margin: 10px 0;
+    padding: 15px;
+    width: 100%;
+    border: 1px solid #666;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #333;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+    border-color: #0F3F62;
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #0F3F62;
+    color: #ffffff;
+    border: 2px solid #0F3F62;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+    background: linear-gradient(45deg, #34A1F0, #0F3F62);
+}
+
+a {
+    color: #666666;
+    font-size: 14px;
+    text-decoration: none;
+    margin-top: 15px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Overlay Panel Styles */
+.overlay-container {
+    width: 50%; /* Ensure it takes half the screen */
+    background-color: #EBF6FE;
+    color: #666666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Ensure it covers the full height */
+    position: relative;
+}
+
+.overlay-panel {
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust to center based on width and height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 40px;
+    width: 100%; /* Ensure it stretches across the container */
+    text-align: center;
+    transition: transform .6s ease-in-out;
+}
+
+.overlay-panel img {
+    max-width: 150px;
+    margin-bottom: 20px;
+}
+
+/* Override the color of h1 and p in the overlay panel */
+.overlay-panel h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #0F3F62; /* Set a new color instead of white */
+}
+
+.overlay-panel p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333; /* Set a darker color instead of white */
+}
+
+/* Social Container */
+.social-container {
+    margin: 20px 0;
+}
+
+.social-container a {
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+    height: 40px;
+    width: 40px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .form-container, .overlay-container {
+        width: 100%;
+    }
+}
+
+/* Shared CSS for both login and register pages */
+
+/* Ensure logo sizes are consistent */
+.onboarding-logo {
+    width: 150px; /* Adjust as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 20px;
+}
+
+/* For smaller screens, adjust the logo size */
+@media (max-width: 768px) {
+    .onboarding-logo {
+        width: 120px; /* Smaller size for mobile screens */
+    }
+}
+

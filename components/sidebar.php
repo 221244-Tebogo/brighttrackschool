@@ -12,10 +12,9 @@
         <nav class="sidebar-menu">
             <?php
             $navItems = [
-                "school" => "Classes",
+                "Dashboard" => "Dashboard",
                 "schedule" => "Timetable",
-                "assessment" => "Reports",
-                "person" => "Profile",
+                "assignment" => "Assignment",
                 "logout" => "Logout"
             ];
             
@@ -37,35 +36,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/css/sidebar.css"> <!-- Link to sidebar CSS -->
+    <link rel="stylesheet" href="../assets/css/sidebar.css">
 </head>
 <body>
-    <aside id="sidebar" class="sidebar">
-        <div class="handle" onmousedown="initResize(event)"></div>
-        <div class="sidebar-inner">
-            <header class="sidebar-header">
-                <img src="../assets/images/Logo.svg" class="sidebar-logo" alt="Logo">
-            </header>
-            <nav class="sidebar-menu">
-                <?php
-                $navItems = [
-                    "school" => "Classes",
-                    "schedule" => "Timetable",
-                    "assessment" => "Reports",
-                    "person" => "Profile",
-                    "logout" => "Logout"
-                ];
-                
-                foreach ($navItems as $icon => $label) {
-                    echo '
-                    <button type="button" class="sidebar-button">
-                        <span class="material-symbols-outlined">'.$icon.'</span>
-                        <p class="sidebar-text">'.ucfirst($label).'</p>
-                    </button>';
-                }
-                ?>
-            </nav>
-        </div>
-    </aside>
+<aside id="sidebar" class="sidebar">
+    <div class="handle" onmousedown="initResize(event)"></div>
+    <div class="sidebar-inner">
+        <header class="sidebar-header">
+            <img src="../assets/images/Logo.svg" class="sidebar-logo" alt="Logo">
+
+        </header>
+        <nav class="sidebar-menu">
+            <?php
+            $navItems = [
+                "dashboard" => ["label" => "Dashboard", "link" => "../student/index.php"],
+                "schedule" => ["label" => "Timetable", "link" => "../student/timetable.php"],
+                "assignment" => ["label" => "Assignments", "link" => "../student/assignment.php"],
+                "logout" => ["label" => "Logout", "link" => "../auth/logout.php"]
+            ];
+            
+            foreach ($navItems as $icon => $item) {
+                echo '
+                <a href="' . $item['link'] . '" class="sidebar-button">
+                    <span class="material-symbols-outlined">'.$icon.'</span>
+                    <p class="sidebar-text">'.ucfirst($item['label']).'</p>
+                </a>';
+            }
+            ?>
+        </nav>
+    </div>
+</aside>
+
+
+
 </body>
 </html>

@@ -1,29 +1,32 @@
 <?php
 require_once '../config.php';
+session_start();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST['name'];
-    $dueDate = $_POST['dueDate'];
-    $description = $_POST['description'];
-    $subjectID = $_POST['subjectID'];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['TeacherID'])) {
+    $teacherID = $_SESSION['TeacherID'];
+    
+    $name = $conn->real_escape_string($_POST['name']);
+    $dueDate = $conn->real_escape_string($_POST['dueDate']);
+    $description = $conn->real_escape_string($_POST['description']);
+    $subjectID = (int)$_POST['subjectID'];
+    $classID = (int)$_POST['classID'];
 
-    $sql = "INSERT INTO Assignment (Name, DueDate, Description, SubjectID) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO Assignment (TeacherID, Name, DueDate, Description, SubjectID, ClassID) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-
-    if (!$stmt) {
+    if ($stmt) {
+        $stmt->bind_param("isssii", $teacherID, $name, $dueDate, $description, $subjectID, $classID);
+        if ($stmt->execute()) {
+            header("Location: view_assignments.php?success=1");
+            exit();
+        } else {
+            echo "Failed to create assignment: " . $stmt->error;
+        }
+        $stmt->close();
+    } else {
         die("Prepare failed: " . $conn->error);
     }
-
-    $stmt->bind_param("sssi", $name, $dueDate, $description, $subjectID);
-
-    if ($stmt->execute()) {
-        echo "Assignment created successfully!";
-    } else {
-        echo "Failed to create assignment: " . $stmt->error;
-    }
-    $stmt->close();
     $conn->close();
 } else {
-    echo "Invalid request method.";
+    header('Location: ../auth/login.php');
+    exit();
 }
-?>
